@@ -12,7 +12,7 @@ namespace TrilhaApiDesafio.Controllers
     {
         private readonly ITarefaService _service;
 
-        public TarefaController(OrganizadorContext context, ITarefaService service)
+        public TarefaController(ITarefaService service)
         {
             _service = service;
         }
