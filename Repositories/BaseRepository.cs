@@ -52,9 +52,9 @@ namespace TrilhaApiDesafio.Repositories
                 throw new Exception($"Entidade com o ID {id} não foi encontrada.");
             }
 
-            var productRemoved = _dbSet.Remove(entity);
+            var objetctRemoved = _dbSet.Remove(entity);
             await _dbContext.SaveChangesAsync();
-            return productRemoved.Entity;
+            return objetctRemoved.Entity;
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
@@ -70,7 +70,7 @@ namespace TrilhaApiDesafio.Repositories
             await _dbContext.SaveChangesAsync();
             return existingEntity;
         }
-        
+
         public void Dispose()
         {
             _dbContext?.Dispose();

@@ -8,10 +8,5 @@ namespace TrilhaApiDesafio.Dtos
     public class TarefaDto : CriarTarefaDto
     {
         public int Id { get; set; }
-
-        public static implicit operator Task<object>(TarefaDto v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
