@@ -14,8 +14,6 @@ namespace TrilhaApiDesafio.Interfaces
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task<T> RemoveAsync(int? id);
-
-        Task<IEnumerable<T>>
-            FindAsync(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
     }
 }
