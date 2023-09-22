@@ -30,50 +30,43 @@ namespace TrilhaApiDesafio.Repositories
 
         public async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            var entity = await _dbSet.Where(predicate).ToListAsync();
+            return entity;
         }
 
         public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return await _dbSet.AsNoTracking().ToListAsync();
+            var entity = await _dbSet.AsNoTracking().ToListAsync();
+            return entity;
         }
 
-        public async Task<TEntity> GetByIdAsync(int? id)
-        {
-            return await _dbSet.FindAsync(id);
-        }
+        public async Task<TEntity> GetByIdAsync(int? id) 
+            => await _dbSet.FindAsync(id);
 
         public async Task<TEntity> RemoveAsync(int? id)
         {
-            var entity = await _dbSet.FindAsync(id);
+            var existingEntity = await _dbSet.FindAsync(id)
+                ?? throw new Exception($"Entidade com o ID {id} não foi encontrada.");
 
-            if (entity == null)
-            {
-                throw new Exception($"Entidade com o ID {id} não foi encontrada.");
-            }
+            var entityRemoved = _dbSet.Remove(existingEntity);
 
-            var objetctRemoved = _dbSet.Remove(entity);
             await _dbContext.SaveChangesAsync();
-            return objetctRemoved.Entity;
+
+            return entityRemoved.Entity;
         }
 
         public async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            var existingEntity = await _dbContext.Set<TEntity>().FindAsync(entity.Id);
-
-            if (existingEntity == null)
-            {
-                throw new Exception($"Entidade com o ID {entity.Id} não foi encontrada.");
-            }
+            var existingEntity = await _dbContext.Set<TEntity>().FindAsync(entity.Id)
+                ?? throw new Exception($"Entidade com o ID {entity.Id} não foi encontrada.");
 
             _dbContext.Entry(existingEntity).CurrentValues.SetValues(entity);
+
             await _dbContext.SaveChangesAsync();
+
             return existingEntity;
         }
 
-        public void Dispose()
-        {
-            _dbContext?.Dispose();
-        }
+        public void Dispose() => _dbContext?.Dispose();
     }
 }
